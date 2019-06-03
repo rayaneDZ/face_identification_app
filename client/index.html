@@ -1,12 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+
+    <!--Import Google Icon Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!--Import materialize.css-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
+
+    <!--Let browser know website is optimized for mobile-->
+    <link rel="shortcut icon" type="image/png" href="./face_id.png"/>
+
+    <link href="https://fonts.googleapis.com/css?family=Titillium+Web&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+    <title>Face Identification App</title>
 </head>
 <body>
-    welcome
+    <div class="container card">
+        <h4 style="text-align: center" id="title">Face Identification App</h4>
+        <div id="buttons">
+            <button class="btn waves-effect waves-light" id="add_user_btn">add a new user</button>
+            <input type="file" accept="image/*" id="file_input"/>
+            <button class="btn waves-effect waves-light" id="upload_image_btn">upload images for an existing user</button>
+        </div>
+        <div id="add_user_container">
+            <span class="wrong" id="add_user_user_exists">*User Already Exists</span>
+            <input type="text" id="add_user_name" placeholder="Name"/>
+            <span class="wrong" id="add_user_wrong_secret_key">*Wrong Secret Key</span>
+            <input type="password" id="add_user_secret_key" placeholder="Secret Key"/>
+            <button class="btn waves-effect waves-light" id="add_user_to_backend_btn">add</button>
+        </div>
+        <div id="upload_image_container">
+            <div id="image_preview"></div>
+            <div id="user_select_input">
+                <label>Select User</label>
+                <select></select>
+            </div>
+            <span class="wrong">*Wrong Secret Key</span>
+            <input type="password" id="upload_image_secret_key" placeholder="Secret Key"/>
+            <button class="btn waves-effect waves-light" id="upload_image_to_backend_btn">upload</button>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js" integrity="sha256-S1J4GVHHDMiirir9qsXWc8ZWw74PHHafpsHp5PXtjTs=" crossorigin="anonymous"></script>
+    <script src="./script.js"></script>
 </body>
 </html>

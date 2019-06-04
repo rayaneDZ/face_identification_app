@@ -37,12 +37,30 @@ body {
     color: #FFF;
     font-size: 12px;
 }
+#select_image_btn_container{
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+}
+#select_image_btn_container > span{
+    display: none;
+}
+#select_image_btn{
+    width : 200px;
+    margin : 0 auto;
+    background-color: transparent;
+    border: 1px solid #26a69a;
+    color: #26a69a;
+    box-shadow: none;
+    margin-bottom: 20px;
+}
 #add_user_container {
     width: 100%;
     padding: 20px;
     display: none;
 }
 #upload_image_container {
+    padding: 20px;
     display: none;
 }
 .wrong {

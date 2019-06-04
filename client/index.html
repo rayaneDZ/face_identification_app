@@ -23,7 +23,6 @@
         <h4 style="text-align: center" id="title">Face Identification App</h4>
         <div id="buttons">
             <button class="btn waves-effect waves-light" id="add_user_btn">add a new user</button>
-            <input type="file" accept="image/*" id="file_input"/>
             <button class="btn waves-effect waves-light" id="upload_image_btn">upload images for an existing user</button>
         </div>
         <div id="add_user_container">
@@ -34,16 +33,24 @@
             <button class="btn waves-effect waves-light" id="add_user_to_backend_btn">add</button>
         </div>
         <div id="upload_image_container">
+            <div id="select_image_btn_container">
+                <span class="wrong" id="upload_image_must_select_image">*You Must Select an Image</span>
+                <input type="file" accept="image/*" id="file_input"/>
+                <button class="btn waves-effect waves-light" id="select_image_btn">add an image</button>
+            </div>
             <div id="image_preview"></div>
             <div id="user_select_input">
                 <label>Select User</label>
                 <select></select>
             </div>
-            <span class="wrong">*Wrong Secret Key</span>
+            <span class="wrong" id="upload_image_wrong_secret_key">*Wrong Secret Key</span>
             <input type="password" id="upload_image_secret_key" placeholder="Secret Key"/>
             <button class="btn waves-effect waves-light" id="upload_image_to_backend_btn">upload</button>
         </div>
     </div>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/6.1.0/firebase-app.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/node-uuid/1.4.8/uuid.min.js" integrity="sha256-h7PiJxtxsf7+VkAGN6N+8/0qZrhK7oYJc/pguDnYJi4=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js" integrity="sha256-S1J4GVHHDMiirir9qsXWc8ZWw74PHHafpsHp5PXtjTs=" crossorigin="anonymous"></script>
     <script src="./script.js"></script>
 </body>

@@ -39,6 +39,9 @@
                 <button class="btn waves-effect waves-light" id="select_image_btn">add an image</button>
             </div>
             <div id="image_preview"></div>
+            <div class="progress" id="progress">
+                <div class="determinate" style="width:0%" id="determinate"></div>
+            </div>
             <div id="user_select_input">
                 <label>Select User</label>
                 <select></select>
@@ -50,8 +53,15 @@
     </div>
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/6.1.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.7.0/firebase-storage.js"></script>
+
+    <!-- UUID -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/node-uuid/1.4.8/uuid.min.js" integrity="sha256-h7PiJxtxsf7+VkAGN6N+8/0qZrhK7oYJc/pguDnYJi4=" crossorigin="anonymous"></script>
+
+    <!-- AXIOS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js" integrity="sha256-S1J4GVHHDMiirir9qsXWc8ZWw74PHHafpsHp5PXtjTs=" crossorigin="anonymous"></script>
+
+    <!-- MY SCRIPT FILE-->
     <script src="./script.js"></script>
 </body>
 </html>

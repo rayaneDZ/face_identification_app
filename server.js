@@ -31,7 +31,6 @@ app.post('/api/check_auth', (req, res) => {
     })
 })
 app.get('/api/users', (req, res) => {
-    console.log('getting users')
     User.find()
     .then(result => {
         return res.status(200).json({
@@ -46,7 +45,6 @@ app.post('/api/add_user', (req, res) => {
         .then(result => {
             let user_exists = false
             result.forEach(user => {
-                console.log('inside for each')
                 if(username === user.username){
                     user_exists = true
                     res.status(409).json({
@@ -56,12 +54,13 @@ app.post('/api/add_user', (req, res) => {
                 }
             })
             if(!user_exists){
-                console.log('creating users')
+                console.log('creating user')
                 const user = new User({
                     username : username
                 })
                 user.save()
                 .then((result) => {
+                    console.log('user created!')
                     res.status(201).json({
                         response : result
                     })
@@ -78,8 +77,17 @@ app.post('/api/add_user', (req, res) => {
 })
 app.post('/api/upload_picture', (req, res) => {
     const username = req.body.username;
-    const image_uuid = req.body.image_uuid;
     const image_path = req.body.image_path;
+    User.findOneAndUpdate({username : username}, {$push : {images_paths : image_path}})
+    .then(() => {
+        res.status(201).json({
+            message : 'added image entry successfully'
+        })
+    }).catch(() => {
+        res.status(500).json({
+            message : 'error'
+        })
+    })
 })
 
 app.use(express.static('./client'));

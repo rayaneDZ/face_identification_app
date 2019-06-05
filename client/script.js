@@ -1,3 +1,11 @@
+(getUsers = () => {
+    axios.get('http://localhost:5000/api/users')
+    .then(result => {
+        const options = result.data.users.map(user => `<option value="${user.username}">${user.username}</option>`)
+        document.querySelector('select').innerHTML = options
+    })
+})()
+
 // Your web app's Firebase configuration
 var firebaseConfig = {
     apiKey: "AIzaSyDyvR4SeXocW5gooY6vfvtfuDfahnPJ7C8",
@@ -11,14 +19,6 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-(getUsers = () => {
-    axios.get('http://localhost:5000/api/users')
-    .then(result => {
-        const options = result.data.users.map(user => `<option value="${user.username}">${user.username}</option>`)
-        document.querySelector('select').innerHTML = options
-    })
-})()
-
 document.getElementById('upload_image_btn').addEventListener('click', () => {
     document.getElementById('add_user_container').style.display = 'none';
     const UIB = document.getElementById('upload_image_container');
@@ -28,6 +28,7 @@ document.getElementById('upload_image_btn').addEventListener('click', () => {
         UIB.style.display = 'block'
     }
 })
+
 document.getElementById('add_user_btn').addEventListener('click', () => {
     document.getElementById('upload_image_container').style.display = 'none';
     const AUC = document.getElementById('add_user_container');
@@ -37,9 +38,11 @@ document.getElementById('add_user_btn').addEventListener('click', () => {
         AUC.style.display = 'block'
     }
 })
+
 document.getElementById('select_image_btn').addEventListener('click', () => {
     document.getElementById('file_input').click();
 })
+
 document.getElementById('file_input').addEventListener('change', (e) => {
     const image = e.target.files[0]
     var reader  = new FileReader();
@@ -88,10 +91,33 @@ document.getElementById('upload_image_to_backend_btn').addEventListener('click',
         })
         .then(() => {
             document.getElementById('upload_image_wrong_secret_key').style.display = 'none';
-            //upload pic to firebase
+            progress = document.getElementById('progress');
+            const uploadTask = firebase.storage().ref().child(`${username}/${image_uuid}`).put(image);
+            progress.style.display = 'block';
+            uploadTask.on("state_changed", (snapshot) => {
+                let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                console.log('Upload is ' + progress + '% done');
+                document.getElementById('determinate').style.width = progress + '%'
+            }, () =>{
+                console.log('error occured in uploadtaks to firebase')
+            }, () => {
+                // Upload completed successfully, now we can get the download URL
+                uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                    axios.post('http://localhost:5000/api/upload_picture', {
+                        username : username,
+                        image_path : downloadURL
+                    }).then(() => {
+                        progress.style.display = 'none';
+                        document.getElementById('imagePreview').style.display = 'none';
+                        alert('Image Added !')
+                    })
+                });
+            });
             //add image url to backend
-        }).catch(() => {
-            document.getElementById('upload_image_wrong_secret_key').style.display = 'block';
+        }).catch(err => {
+            if(err.response){
+                document.getElementById('upload_image_wrong_secret_key').style.display = 'block';
+            }
         })
     }else{
         document.getElementById('upload_image_must_select_image').style.display = "block"

@@ -10,7 +10,7 @@ select {
 body {
     height: 100vh;
     background-color: #eee;
-    padding-top: 20px 
+    padding-top: 20px;
 }
 .container {
     margin : 0 auto;
@@ -23,8 +23,10 @@ body {
 }
 #buttons{
     display: flex;
-    justify-content: space-between; 
-    margin-bottom: 20px;
+    flex-direction: column;
+    align-items : stretch;
+    height: 80px;
+    justify-content: space-between;
 }
 #file_input {
     display: none;
@@ -57,7 +59,7 @@ body {
 #add_user_container {
     width: 100%;
     padding: 20px;
-    display: none;
+    display: block;
 }
 #upload_image_container {
     padding: 20px;
@@ -71,4 +73,37 @@ body {
 }
 #add_user_wrong_secret_key{
     display : none;
+}
+#progress {
+    display: none;
+}
+.btn {
+    box-shadow: none;
+}
+.btn:hover{
+    box-shadow: none;
+}
+#select_image_btn:hover{
+    background-color: #26a69a;
+    color: #FFF;
+}
+
+@media only screen and (max-width: 520px){
+    .container {
+        margin : 0 auto;
+        width: 100%;
+        padding: 20px;
+        min-height: 100vh;
+    }
+    body{
+        padding-top: 0;
+    }
+}
+@media only screen and (max-width: 480px){
+    #buttons{
+        flex-direction: column;
+        align-items : stretch;
+        height: 80px;
+        justify-content: space-between;
+    }
 }

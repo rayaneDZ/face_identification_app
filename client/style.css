@@ -9,7 +9,7 @@ select {
 }
 body {
     height: 100vh;
-    background-color: #eee;
+    background-color: #EEE;
     padding-top: 20px;
 }
 .container {
@@ -33,6 +33,16 @@ body {
 }
 #add_user_btn {
     font-size: 12px;
+    background-color : #e0f2f1;
+    color :#040F3D;
+}
+#add_user_to_backend_btn{
+    background-color : transparent;
+    border : 1px solid  #e0f2f1;
+    color :#040F3D
+}
+#add_user_to_backend_btn:hover{
+    background-color: #e0f2f1;
 }
 #upload_image_btn {
     background-color: #040F3D;
@@ -51,10 +61,23 @@ body {
     width : 200px;
     margin : 0 auto;
     background-color: transparent;
-    border: 1px solid #26a69a;
-    color: #26a69a;
+    border: 1px solid #040F3D;
+    color: #040F3D;
     box-shadow: none;
     margin-bottom: 20px;
+}
+#select_image_btn:hover{
+    background-color: #040F3D;
+    color: #FFF;
+}
+#upload_image_to_backend_btn{
+    background-color: transparent;
+    border: 1px solid #040F3D;
+    color: #040F3D;
+}
+#upload_image_to_backend_btn:hover{
+    background-color: #040F3D;
+    color: #FFF;
 }
 #add_user_container {
     width: 100%;
@@ -83,11 +106,6 @@ body {
 .btn:hover{
     box-shadow: none;
 }
-#select_image_btn:hover{
-    background-color: #26a69a;
-    color: #FFF;
-}
-
 @media only screen and (max-width: 520px){
     .container {
         margin : 0 auto;
@@ -98,6 +116,10 @@ body {
     body{
         padding-top: 0;
     }
+}
+#train_btn{
+    width : 100%;
+    margin-top : 50px;
 }
 @media only screen and (max-width: 480px){
     #buttons{

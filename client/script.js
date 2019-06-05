@@ -21,22 +21,12 @@ firebase.initializeApp(firebaseConfig);
 
 document.getElementById('upload_image_btn').addEventListener('click', () => {
     document.getElementById('add_user_container').style.display = 'none';
-    const UIB = document.getElementById('upload_image_container');
-    if(UIB.style.display === 'block'){
-        UIB.style.display = 'none'
-    }else {
-        UIB.style.display = 'block'
-    }
+    document.getElementById('upload_image_container').style.display = "block";
 })
 
 document.getElementById('add_user_btn').addEventListener('click', () => {
-    document.getElementById('upload_image_container').style.display = 'none';
-    const AUC = document.getElementById('add_user_container');
-    if(AUC.style.display === 'block'){
-        AUC.style.display = 'none'
-    }else {
-        AUC.style.display = 'block'
-    }
+    document.getElementById('add_user_container').style.display = 'block';
+    document.getElementById('upload_image_container').style.display = "none";
 })
 
 document.getElementById('select_image_btn').addEventListener('click', () => {
@@ -122,4 +112,8 @@ document.getElementById('upload_image_to_backend_btn').addEventListener('click',
     }else{
         document.getElementById('upload_image_must_select_image').style.display = "block"
     }
+})
+
+document.getElementById('train_btn').addEventListener('click', () => {
+    console.log('clicked')
 })

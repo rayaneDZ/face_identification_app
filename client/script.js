@@ -1,6 +1,6 @@
 (getUsers = () => {
     console.log('getting the users')
-    axios.get('http://192.168.1.5:5000/api/users')
+    axios.get('http://localhost:5000/api/users')
     .then(result => {
         const options = result.data.users.map(user => `<option value="${user.username}">${user.username}</option>`)
         document.querySelector('select').innerHTML = options
@@ -50,7 +50,7 @@ document.getElementById('file_input').addEventListener('change', (e) => {
 document.getElementById('add_user_to_backend_btn').addEventListener('click', () => {
     const username = document.getElementById('add_user_name').value;
     const secret_key = document.getElementById('add_user_secret_key').value;
-    axios.post('http://192.168.1.5:5000/api/add_user', {
+    axios.post('http://localhost:5000/api/add_user', {
         username : username.toLowerCase(),
         secret_key : secret_key
     }).then(() => {
@@ -80,7 +80,7 @@ document.getElementById('upload_image_to_backend_btn').addEventListener('click',
     const image_uuid = uuid()
     if(image){
         document.getElementById('upload_image_must_select_image').style.display = "none"
-        axios.post('http://192.168.1.5:5000/api/check_auth', {
+        axios.post('http://localhost:5000/api/check_auth', {
             secret_key : secret_key
         })
         .then(() => {
@@ -97,7 +97,7 @@ document.getElementById('upload_image_to_backend_btn').addEventListener('click',
             }, () => {
                 // Upload completed successfully, now we can get the download URL
                 uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-                    axios.post('http://192.168.1.5:5000/api/upload_picture', {
+                    axios.post('http://localhost:5000/api/upload_picture', {
                         username : username,
                         image_path : downloadURL
                     }).then(() => {
@@ -120,7 +120,7 @@ document.getElementById('upload_image_to_backend_btn').addEventListener('click',
 
 document.getElementById('train_btn').addEventListener('click', () => {
     console.log('training the model ...')
-    axios.get('http://192.168.1.5:5000/api/train')
+    axios.get('http://localhost:5000/api/train')
     .then(result => {
         if(result.data.message === 'trained'){
 	    console.log('model Trained!!')

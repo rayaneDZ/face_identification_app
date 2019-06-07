@@ -6,6 +6,10 @@
         document.querySelector('select').innerHTML = options
     }).catch(err =>{
     console.log(err);
+    axios.get('http://localhost:5000/api/users')
+    .then(result => {
+        const options = result.data.users.map(user => `<option value="${user.username}">${user.username}</option>`)
+        document.querySelector('select').innerHTML = options
     })
 })()
 
@@ -128,4 +132,6 @@ document.getElementById('train_btn').addEventListener('click', () => {
     }).catch(err => {
         console.log(err)
     })
+})
+    console.log('clicked')
 })

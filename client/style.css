@@ -119,8 +119,28 @@ body {
 }
 #train_btn{
     width : 100%;
-    margin-top : 50px;
+    margin-top : 20px;
+    margin-bottom : 20px;
     background-color : #f44336;
+}
+#training_preloader{
+    text-align : center
+}
+#loading, #model_trained, #updating{
+    display : none
+}
+#updating {
+    margin-bottom : 20px;
+    color : #040F3D;
+}
+#model_trained{
+    color : #040F3D;
+}
+.progress{
+    background-color : #ffcdd2
+}
+.indeterminate {
+    background-color : #f44336 !important;
 }
 @media only screen and (max-width: 480px){
     #buttons{

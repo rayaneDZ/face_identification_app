@@ -4,12 +4,6 @@
     .then(result => {
         const options = result.data.users.map(user => `<option value="${user.username}">${user.username}</option>`)
         document.querySelector('select').innerHTML = options
-    }).catch(err =>{
-    console.log(err);
-    axios.get('http://localhost:5000/api/users')
-    .then(result => {
-        const options = result.data.users.map(user => `<option value="${user.username}">${user.username}</option>`)
-        document.querySelector('select').innerHTML = options
     })
 })()
 
@@ -124,14 +118,20 @@ document.getElementById('upload_image_to_backend_btn').addEventListener('click',
 
 document.getElementById('train_btn').addEventListener('click', () => {
     console.log('training the model ...')
+    document.getElementById('updating').style.display = 'block';
+    document.getElementById('loading').style.display = 'block';
     axios.get('http://192.168.1.5:5000/api/train')
     .then(result => {
         if(result.data.message === 'trained'){
 	    console.log('model Trained!!')
+	    document.getElementById('model_trained').style.display = 'block';
+	    document.getElementById('updating').style.display = 'none';
+	    document.getElementById('loading').style.display = 'none';
+	    setTimeout(function(){
+		document.getElementById('model_trained').style.display = 'none';
+	    }, 3000)
 	}
     }).catch(err => {
         console.log(err)
     })
-})
-    console.log('clicked')
 })

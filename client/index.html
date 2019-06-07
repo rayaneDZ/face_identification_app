@@ -52,6 +52,13 @@
             <button class="btn waves-effect waves-light" id="upload_image_to_backend_btn">upload</button>
         </div>
         <button id="train_btn" class="btn waves-effect waves-light">Train Model</button>
+	<div id="training_preloader">
+	    <h5 id="updating">Updating Database & Training...</h5>
+	    <h5 id="model_trained">Model Trained &#x2713</h5>
+	    <div class="progress" id="loading">
+	      <div class="indeterminate"></div>
+	    </div>
+	</div>
     </div>
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/6.1.0/firebase-app.js"></script>

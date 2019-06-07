@@ -1,0 +1,132 @@
+* {
+    margin : 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Titillium Web', sans-serif;
+}
+select {
+    display: block;
+}
+body {
+    height: 100vh;
+    background-color: #EEE;
+    padding-top: 20px;
+}
+.container {
+    margin : 0 auto;
+    width: 500px;
+    padding: 20px;
+    margin-bottom: 50px;
+}
+#title {
+    color: #040F3D;
+}
+#buttons{
+    display: flex;
+    flex-direction: column;
+    align-items : stretch;
+    height: 80px;
+    justify-content: space-between;
+}
+#file_input {
+    display: none;
+}
+#add_user_btn {
+    font-size: 12px;
+    background-color : #e0f2f1;
+    color :#040F3D;
+}
+#add_user_to_backend_btn{
+    background-color : transparent;
+    border : 1px solid  #e0f2f1;
+    color :#040F3D
+}
+#add_user_to_backend_btn:hover{
+    background-color: #e0f2f1;
+}
+#upload_image_btn {
+    background-color: #040F3D;
+    color: #FFF;
+    font-size: 12px;
+}
+#select_image_btn_container{
+    flex-direction: column;
+    display: flex;
+    align-items: center;
+}
+#select_image_btn_container > span{
+    display: none;
+}
+#select_image_btn{
+    width : 200px;
+    margin : 0 auto;
+    background-color: transparent;
+    border: 1px solid #040F3D;
+    color: #040F3D;
+    box-shadow: none;
+    margin-bottom: 20px;
+}
+#select_image_btn:hover{
+    background-color: #040F3D;
+    color: #FFF;
+}
+#upload_image_to_backend_btn{
+    background-color: transparent;
+    border: 1px solid #040F3D;
+    color: #040F3D;
+}
+#upload_image_to_backend_btn:hover{
+    background-color: #040F3D;
+    color: #FFF;
+}
+#add_user_container {
+    width: 100%;
+    padding: 20px;
+    display: block;
+}
+#upload_image_container {
+    padding: 20px;
+    display: none;
+}
+.wrong {
+    font-size: 12px;
+    font-weight: bold;
+    color: #C62828;
+    display: none;
+}
+#add_user_wrong_secret_key{
+    display : none;
+}
+#progress {
+    display: none;
+}
+.btn {
+    box-shadow: none;
+}
+.btn:hover{
+    box-shadow: none;
+}
+@media only screen and (max-width: 520px){
+    .container {
+        margin : 0 auto;
+        width: 100%;
+        padding: 20px;
+        min-height: 100vh;
+    }
+    body{
+        padding-top: 0;
+    }
+}
+#train_btn{
+    width : 100%;
+    margin-top : 50px;
+    background-color : #f44336;
+}
+@media only screen and (max-width: 480px){
+    #buttons{
+        flex-direction: column;
+        align-items : stretch;
+        height: 80px;
+        justify-content: space-between;
+    }
+}

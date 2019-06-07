@@ -101,7 +101,7 @@ document.getElementById('upload_image_to_backend_btn').addEventListener('click',
             }, () => {
                 // Upload completed successfully, now we can get the download URL
                 uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-                    axios.post('http://192.168.1.5:5000/api/upload_picture' {
+                    axios.post('http://192.168.1.5:5000/api/upload_picture', {
                         username : username,
                         image_path : downloadURL
                     }).then(() => {

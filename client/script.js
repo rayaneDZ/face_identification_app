@@ -6,6 +6,10 @@
         document.querySelector('select').innerHTML = options
     }).catch(err =>{
     console.log(err);
+    axios.get('http://localhost:5000/api/users')
+    .then(result => {
+        const options = result.data.users.map(user => `<option value="${user.username}">${user.username}</option>`)
+        document.querySelector('select').innerHTML = options
     })
 })()
 
@@ -97,7 +101,7 @@ document.getElementById('upload_image_to_backend_btn').addEventListener('click',
             }, () => {
                 // Upload completed successfully, now we can get the download URL
                 uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-                    axios.post('http://192.168.1.5:5000/api/upload_picture', {
+                    axios.post('http://192.168.1.5:5000/api/upload_picture' {
                         username : username,
                         image_path : downloadURL
                     }).then(() => {
@@ -128,4 +132,6 @@ document.getElementById('train_btn').addEventListener('click', () => {
     }).catch(err => {
         console.log(err)
     })
+})
+    console.log('clicked')
 })

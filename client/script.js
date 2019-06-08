@@ -42,6 +42,7 @@ document.getElementById('file_input').addEventListener('change', (e) => {
         const src = reader.result;
         document.getElementById('image_preview').innerHTML = `<img src="${src}" width="100%" alt="Image preview..." id="imagePreview" style="margin-bottom : 10px"/>`
     }, false);
+    document.getElementById('image_preview').style.display = "block"
     document.getElementById('upload_image_must_select_image').style.display = "none"
 })
 
@@ -76,35 +77,56 @@ document.getElementById('upload_image_to_backend_btn').addEventListener('click',
     const username = document.querySelector('select').value;
     const secret_key = document.getElementById('upload_image_secret_key').value;
     const image_uuid = uuid()
+    async function compressImage(image){
+	console.log('source image : ', image)
+	let max;
+	if(image.size > 500000){
+	    max = 0.5
+	}else{
+	   max = image.size / 1024 / 1024
+	}
+	const options = {maxSizeMB : max, maxWidthOrHeight : 1024, useWebWorker : false}
+	const compressedImage = await imageCompression(image, options)
+	return compressedImage;
+    }
     if(image){
         document.getElementById('upload_image_must_select_image').style.display = "none"
         axios.post('http://192.168.1.5:5000/api/check_auth', {
             secret_key : secret_key
         })
         .then(() => {
-            document.getElementById('upload_image_wrong_secret_key').style.display = 'none';
-            progress = document.getElementById('progress');
-            const uploadTask = firebase.storage().ref().child(`${username}/${image_uuid}`).put(image);
-            progress.style.display = 'block';
-            uploadTask.on("state_changed", (snapshot) => {
-                let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-                console.log('Upload is ' + progress + '% done');
-                document.getElementById('determinate').style.width = progress + '%'
-            }, () =>{
-                console.log('error occured in uploadtaks to firebase')
-            }, () => {
-                // Upload completed successfully, now we can get the download URL
-                uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-                    axios.post('http://192.168.1.5:5000/api/upload_picture', {
-                        username : username,
-                        image_path : downloadURL
-                    }).then(() => {
-                        progress.style.display = 'none';
-                        document.getElementById('imagePreview').style.display = 'none';
-                        alert('Image Added !')
-                    })
+	    compressImage(image).then(result => {
+		console.log(result)
+		uploadToFirebase(result)
+	    });
+
+	    function uploadToFirebase(compressedImage){
+		console.log('compressed Image size : ', compressedImage.size)
+                document.getElementById('upload_image_wrong_secret_key').style.display = 'none';
+                progress = document.getElementById('progress');
+                const uploadTask = firebase.storage().ref().child(`${username}/${image_uuid}`).put(compressedImage);
+                progress.style.display = 'block';
+                uploadTask.on("state_changed", (snapshot) => {
+                    let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    console.log('Upload is ' + progress + '% done');
+                    document.getElementById('determinate').style.width = progress + '%'
+                }, () =>{
+                    console.log('error occured in uploadtaks to firebase')
+                }, () => {
+                    // Upload completed successfully, now we can get the download URL
+                    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                        axios.post('http://192.168.1.5:5000/api/upload_picture', {
+                            username : username,
+                            image_path : downloadURL
+                        }).then(() => {
+                            progress.style.display = 'none';
+                            document.getElementById('imagePreview').style.display = 'none';
+                            alert('Image Added !')
+                        })
+                    });
                 });
-            });
+
+	    }
             //add image url to backend
         }).catch(err => {
             if(err.response){

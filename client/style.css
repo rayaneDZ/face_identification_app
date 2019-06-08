@@ -145,6 +145,27 @@ body {
 .determinate {
     background-color : #f44336 !important;
 }
+#uploading{
+    display: none;
+}
+#checking{
+    display: none;
+}
+h5{
+    text-align: center;
+}
+#yes, #no{
+    display : none;
+}
+#yes {
+    color : #009688;
+}
+#no {
+    color: #f44336;
+}
+#check_face_progress{
+    display: none;
+}
 @media only screen and (max-width: 480px){
     #buttons{
         flex-direction: column;

@@ -77,8 +77,9 @@ document.getElementById('upload_image_to_backend_btn').addEventListener('click',
     const username = document.querySelector('select').value;
     const secret_key = document.getElementById('upload_image_secret_key').value;
     const image_uuid = uuid()
+
+    //THIS FUNCTION COMPRESSES THE IMAGE
     async function compressImage(image){
-	console.log('source image : ', image)
 	let max;
 	if(image.size > 500000){
 	    max = 0.5
@@ -89,23 +90,28 @@ document.getElementById('upload_image_to_backend_btn').addEventListener('click',
 	const compressedImage = await imageCompression(image, options)
 	return compressedImage;
     }
+
+    //CHECK IF THE USER UPLOADED AN IMAGE FIRST
     if(image){
         document.getElementById('upload_image_must_select_image').style.display = "none"
         axios.post('http://192.168.1.5:5000/api/check_auth', {
             secret_key : secret_key
         })
         .then(() => {
+	    //IF THE SECRET KEY IS CORRECT, COMPRESS THE IMAGE AND SEND IT TO FIREBASE
+	    document.getElementById('upload_image_wrong_secret_key').style.display = "none"
 	    compressImage(image).then(result => {
 		console.log(result)
 		uploadToFirebase(result)
-	    });
+	    })
 
+	    //THIS IS THE FUNCTION THAT SENDS THE IMAGE TO FIREBASE
 	    function uploadToFirebase(compressedImage){
-		console.log('compressed Image size : ', compressedImage.size)
-                document.getElementById('upload_image_wrong_secret_key').style.display = 'none';
-                progress = document.getElementById('progress');
+
+		//UPDATING THE DOM
+                document.getElementById('progress').style.display = "block";
+		document.getElementById('uploading').style.display = "block";
                 const uploadTask = firebase.storage().ref().child(`${username}/${image_uuid}`).put(compressedImage);
-                progress.style.display = 'block';
                 uploadTask.on("state_changed", (snapshot) => {
                     let progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
                     console.log('Upload is ' + progress + '% done');
@@ -115,19 +121,65 @@ document.getElementById('upload_image_to_backend_btn').addEventListener('click',
                 }, () => {
                     // Upload completed successfully, now we can get the download URL
                     uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+
+			//IMAGE UPLOADED TO FIREBASE
+			console.log('image uploaded to firebase');
+			document.getElementById('progress').style.display = "none";
+			document.getElementById('uploading').style.display = "none";
+
+			//send image url to backend
                         axios.post('http://192.168.1.5:5000/api/upload_picture', {
                             username : username,
                             image_path : downloadURL
                         }).then(() => {
-                            progress.style.display = 'none';
-                            document.getElementById('imagePreview').style.display = 'none';
-                            alert('Image Added !')
+
+			    //UPDATING THE DOM
+			    console.log('image uploaded to backend');
+			    document.getElementById('check_face_progress').style.display = "block";
+			    document.getElementById('checking').style.display = "block";
+
+			    //check if the image contains a face
+			    axios.post('http://192.168.1.5:5000/api/face_check', {
+				url : downloadURL
+			    }).then(result=>{
+
+				document.getElementById('check_face_progress').style.display = "none";
+				document.getElementById('checking').style.display = "none";
+				console.log('checking if the image contains a face');
+				if(result.data.message === true){
+				    console.log('yes it does contain a face')
+				    document.getElementById('yes').style.display = "block";
+				    setTimeout(() => {
+					document.getElementById('yes').style.display = "none";
+				    }, 3000)
+				}else {
+				    console.log('No it does not contain a face :/')
+				    document.getElementById('no').style.display = "block";
+				    setTimeout(() => {
+					document.getElementById('no').style.display = "none";
+				    }, 3000)
+
+				    //DELETE THE IMAGE FROM FIREBASE AND MONGODB
+				    firebase.storage().ref().child(`${username}/${image_uuid}`).delete()
+            			    .then(() => {
+					console.log('image deleted')
+            			        axios.post('http://192.168.1.5:5000/api/delete_image', {
+					    url : downloadURL,
+					    username : username
+					}).then(result => {
+					    console.log('image deleted from mongodb also');
+					})
+			            }).catch(() => {
+			                console.log('image could not be deleted')
+			            })
+				}
+			    }).catch(err => {
+				console.log(err)
+			    })
                         })
                     });
                 });
-
 	    }
-            //add image url to backend
         }).catch(err => {
             if(err.response){
                 document.getElementById('upload_image_wrong_secret_key').style.display = 'block';

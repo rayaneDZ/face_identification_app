@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const fs = require('fs');
 const express  = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -7,6 +8,7 @@ const cors = require("cors");
 const User = require('./models/User.js');
 const path = require('path');
 const cp  = require('child_process');
+const request = require('request');
 
 const app = express();
 const PORT = 5000;
@@ -108,6 +110,61 @@ app.get('/api/train', (req, res) =>{
 	}
     })
 })
+
+app.post('/api/face_check', (req, res) => {
+    const url = req.body.url
+    request.head(url, () => {
+        console.log('downloading one image .......')
+        request(url).pipe(fs.createWriteStream('/home/pi/Desktop/face_identification_app/face_check/check.jpeg')).on('close', () => {
+            console.log('downloaded one image');
+            cp.exec('python /home/pi/Desktop/face_identification_app/face_check/face_check.py', (err, stdout, stderr) => {
+                if(err){
+                    console.log('second exec err : ', err)
+                    res.status(500).json({
+                        message : 'internal error'
+                    })
+                }
+                if(stdout){
+		    console.log('image contains a face');
+                    res.status(200).json({
+                        message : true
+                    })
+		    fs.unlink('/home/pi/Desktop/face_identification_app/face_check/check.jpeg', () => console.log('deleted check.jpeg'))
+                }else {
+		    console.log('image does NOT contain a face :/');
+                    res.status(200).json({
+                        message : false
+                    })
+                }
+            })
+        });
+    });
+})
+
+app.post('/api/delete_image', (req, res) => {
+    const url = req.body.url;
+    const username = req.body.username
+    console.log(url, username)
+    User.findOne({username : username})
+        .exec()
+        .then(user => {
+            const index = user.images_paths.indexOf(url);
+            if(index > -1){
+		console.log('the if')
+                user.images_paths.splice(index, 1);
+                user.save();
+                res.status(202).json({
+                    message: true
+                });
+            }else{
+		console.log('the else')
+                res.status(404).json({
+                    message: false
+                })
+            }
+        })
+})
+
 
 app.use(express.static('./client'));
 app.get('*', (req, res) => {

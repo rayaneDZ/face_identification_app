@@ -40,6 +40,13 @@
                 <button class="btn waves-effect waves-light" id="select_image_btn">add an image</button>
             </div>
             <div id="image_preview"></div>
+	    <h5 id="uploading">Uploading...</h5>
+	    <h5 id="checking">Checking if the image contains a face...</h5>
+	    <h5 id="yes">Your image Does contain a face &#x2713</h5>
+	    <h5 id="no">We could not extract a face from your image &#x2716</h5>
+	    <div class="progress" id="check_face_progress">
+		<div class="indeterminate"></div>
+	    </div>
             <div class="progress" id="progress">
                 <div class="determinate" style="width:0%" id="determinate"></div>
             </div>

@@ -129,13 +129,13 @@ app.post('/api/face_check', (req, res) => {
                     res.status(200).json({
                         message : true
                     })
-		    fs.unlink('/home/pi/Desktop/face_identification_app/face_check/check.jpeg', () => console.log('deleted check.jpeg'))
                 }else {
 		    console.log('image does NOT contain a face :/');
                     res.status(200).json({
                         message : false
                     })
                 }
+  	   	fs.unlink('/home/pi/Desktop/face_identification_app/face_check/check.jpeg', () => console.log('deleted check.jpeg'))
             })
         });
     });
@@ -144,20 +144,17 @@ app.post('/api/face_check', (req, res) => {
 app.post('/api/delete_image', (req, res) => {
     const url = req.body.url;
     const username = req.body.username
-    console.log(url, username)
     User.findOne({username : username})
         .exec()
         .then(user => {
             const index = user.images_paths.indexOf(url);
             if(index > -1){
-		console.log('the if')
                 user.images_paths.splice(index, 1);
                 user.save();
                 res.status(202).json({
                     message: true
                 });
             }else{
-		console.log('the else')
                 res.status(404).json({
                     message: false
                 })

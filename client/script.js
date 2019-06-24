@@ -1,6 +1,6 @@
 (getUsers = () => {
     console.log('getting the users')
-    axios.get('http://192.168.1.5:5000/api/users')
+    axios.get('/api/users')
     .then(result => {
         const options = result.data.users.map(user => `<option value="${user.username}">${user.username}</option>`)
         document.querySelector('select').innerHTML = options
@@ -49,7 +49,7 @@ document.getElementById('file_input').addEventListener('change', (e) => {
 document.getElementById('add_user_to_backend_btn').addEventListener('click', () => {
     const username = document.getElementById('add_user_name').value;
     const secret_key = document.getElementById('add_user_secret_key').value;
-    axios.post('http://192.168.1.5:5000/api/add_user', {
+    axios.post('/api/add_user', {
         username : username.toLowerCase(),
         secret_key : secret_key
     }).then(() => {
@@ -94,7 +94,7 @@ document.getElementById('upload_image_to_backend_btn').addEventListener('click',
     //CHECK IF THE USER UPLOADED AN IMAGE FIRST
     if(image){
         document.getElementById('upload_image_must_select_image').style.display = "none"
-        axios.post('http://192.168.1.5:5000/api/check_auth', {
+        axios.post('/api/check_auth', {
             secret_key : secret_key
         })
         .then(() => {
@@ -128,7 +128,7 @@ document.getElementById('upload_image_to_backend_btn').addEventListener('click',
 			document.getElementById('uploading').style.display = "none";
 
 			//send image url to backend
-                        axios.post('http://192.168.1.5:5000/api/upload_picture', {
+                        axios.post('/api/upload_picture', {
                             username : username,
                             image_path : downloadURL
                         }).then(() => {
@@ -139,7 +139,7 @@ document.getElementById('upload_image_to_backend_btn').addEventListener('click',
 			    document.getElementById('checking').style.display = "block";
 
 			    //check if the image contains a face
-			    axios.post('http://192.168.1.5:5000/api/face_check', {
+			    axios.post('/api/face_check', {
 				url : downloadURL
 			    }).then(result=>{
 
@@ -163,7 +163,7 @@ document.getElementById('upload_image_to_backend_btn').addEventListener('click',
 				    firebase.storage().ref().child(`${username}/${image_uuid}`).delete()
             			    .then(() => {
 					console.log('image deleted')
-            			        axios.post('http://192.168.1.5:5000/api/delete_image', {
+            			        axios.post('/api/delete_image', {
 					    url : downloadURL,
 					    username : username
 					}).then(result => {
@@ -194,7 +194,7 @@ document.getElementById('train_btn').addEventListener('click', () => {
     console.log('training the model ...')
     document.getElementById('updating').style.display = 'block';
     document.getElementById('loading').style.display = 'block';
-    axios.get('http://192.168.1.5:5000/api/train')
+    axios.get('/api/train')
     .then(result => {
         if(result.data.message === 'trained'){
 	    console.log('model Trained!!')

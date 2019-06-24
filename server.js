@@ -98,7 +98,7 @@ app.post('/api/upload_picture', (req, res) => {
 
 app.get('/api/train', (req, res) =>{
     console.log('reached api train route');
-    let n = cp.fork('/home/pi/Desktop/face_ID/images/downloader/downloader.js')
+    let n = cp.fork('/home/pi/Desktop/face_ID/downloader/downloader.js')
     n.on('message', (m) => {
 	if(m.message === 'downloaded'){
 	    console.log('downloaded')
@@ -116,7 +116,7 @@ app.post('/api/face_check', (req, res) => {
     request.head(url, () => {
         console.log('downloading one image .......')
         request(url).pipe(fs.createWriteStream('/home/pi/Desktop/face_identification_app/face_check/check.jpeg')).on('close', () => {
-            console.log('downloaded one image');
+            console.log('downloaded one image to face check it');
             cp.exec('python /home/pi/Desktop/face_identification_app/face_check/face_check.py', (err, stdout, stderr) => {
                 if(err){
                     console.log('second exec err : ', err)

@@ -16,12 +16,21 @@ const PORT = 5000;
 app.use(cors());
 app.use(bodyParser.json());
 
-mongoose.connect(`mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@face-identification-app-7h6js.mongodb.net/test?retryWrites=true&w=majority`, {useNewUrlParser: true}, (err, db) =>{
-    mongoose.connection.readyState == 1 ? console.log('CONNECTED TO DB') : console.log('UNABLE TO CONNECT TO DB');
-    if(err) {
-        console.log(err)
-    }
-});
+let i = 0;
+
+const connect_recursive = () => {
+  mongoose.connect(`mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@face-identification-app-7h6js.mongodb.net/test?retryWrites=true&w=majority`, {useNewUrlParser: true}, (err, db) =>{
+      mongoose.connection.readyState == 1 ? console.log('CONNECTED TO DB') : console.log('UNABLE TO CONNECT TO DB');
+      if(err) {
+          console.log(err);
+	  i += 1;
+	  console.log(i);
+	  connect_recursive();
+      }
+  });
+}
+
+connect_recursive();
 
 app.post('/api/check_auth', (req, res) => {
     const secret_key = req.body.secret_key;

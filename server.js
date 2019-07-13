@@ -20,11 +20,9 @@ let i = 0;
 
 const connect_recursive = () => {
   mongoose.connect(`mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@face-identification-app-7h6js.mongodb.net/test?retryWrites=true&w=majority`, {useNewUrlParser: true}, (err, db) =>{
-      mongoose.connection.readyState == 1 ? console.log('CONNECTED TO DB') : console.log('UNABLE TO CONNECT TO DB');
+      mongoose.connection.readyState == 1 ? console.log('CONNECTED TO DB') : console.log('UNABLE TO CONNECT TO DB : ', i);
       if(err) {
-          console.log(err);
-	  i += 1;
-	  console.log(i);
+	  i = i + 1;
 	  connect_recursive();
       }
   });
